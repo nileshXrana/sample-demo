@@ -17,6 +17,10 @@ export class LoginUserHandler {
     const user = await this.findUserHandler.execute(email);
 
     if (user) {
+      if (!user.password) {
+        throw new UnauthorizedException('This account uses Google login');
+      }
+
       const isMatch = await bcrypt.compare(password, user.password);
       if (!isMatch) {
         throw new UnauthorizedException('Invalid Password');

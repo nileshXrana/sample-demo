@@ -20,10 +20,14 @@ import {
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Divider from "@mui/material/Divider";
+import GoogleIcon from '@mui/icons-material/Google';
 
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import { loginThunk } from "@/features/user/user.action";
+import { googleLoginThunk, loginThunk } from "@/features/user/user.action";
 import { clearError } from "@/features/user/user.slice";
+
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { auth } from "@/lib/firebase";
 
 const loginSchema = z.object({
   email: z.string().min(1, "Email is required").email("Invalid email address"),
@@ -72,11 +76,23 @@ export default function LoginPage() {
     }
   };
 
+  const handleGoogleLogin = async () => {
+    try {
+      const provider = new GoogleAuthProvider();
+      const result = await signInWithPopup(auth, provider);
+      const idToken = await result.user.getIdToken();
+      await dispatch(googleLoginThunk(idToken));
+      router.push("/dashboard");
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <Box className={styles.container}>
       <Box className={styles.card}>
         <Typography component="h1" className={styles.title}>
-          Login
+          {/* Login */}
         </Typography>
 
         <Typography className={styles.subtitle}>
@@ -164,6 +180,17 @@ export default function LoginPage() {
             Login
           </Button>
         </form>
+
+        <Divider className={styles.divider}>or</Divider>
+
+        <Button
+          className={styles.googleButton}
+          variant="outlined"
+          startIcon={<GoogleIcon />}
+          onClick={handleGoogleLogin}>
+          Continue with Google
+        </Button>
+
       </Box>
     </Box>
   );

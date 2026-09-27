@@ -26,13 +26,9 @@ export const register = async (user: registerRequest) => {
 };
 
 export const logout = async () => {
-  const response = await axios.post(
-    `${BACKEND}/auth/logout`,
-    null,
-    {
-      withCredentials: true,
-    },
-  );
+  const response = await axios.post(`${BACKEND}/auth/logout`, null, {
+    withCredentials: true,
+  });
   return response.data;
 };
 
@@ -40,5 +36,16 @@ export const getCurrentUser = async () => {
   const response = await axios.get(`${BACKEND}/users/me`, {
     withCredentials: true,
   });
+  return response.data;
+};
+
+export const googleLogin = async (idToken: string) => {
+  const response = await axios.post(
+    `${BACKEND}/auth/google`,
+    { idToken },
+    {
+      withCredentials: true,
+    },
+  );
   return response.data;
 };

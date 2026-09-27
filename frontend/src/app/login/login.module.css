@@ -114,3 +114,16 @@
 .submitButton:hover {
   background-color: #004182;
 }
+
+.googleButton {
+  width: 100%;
+  color: rgba(0, 0, 0, 0.87);
+  border-color: rgba(0, 0, 0, 0.12);
+  background-color: #ffffff;
+  text-transform: none;
+  font-weight: 500;
+}
+.googleButton:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+  border-color: rgba(0, 0, 0, 0.6);
+}
