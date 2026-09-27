@@ -1,7 +1,7 @@
 "use client";
 
 import styles from "./register.module.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm, SubmitHandler } from "react-hook-form";
@@ -19,8 +19,9 @@ import {
   InputAdornment,
   IconButton,
 } from "@mui/material";
-import { useAppDispatch } from "@/lib/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { registerThunk } from "@/features/user/user.action";
+import { clearError } from "@/features/user/user.slice";
 import Divider from '@mui/material/Divider';
 
 const signupSchema = z.object({
@@ -41,8 +42,12 @@ export default function SignupPage() {
   const router = useRouter();
   const dispatch = useAppDispatch();
 
+  useEffect(() => {
+    dispatch(clearError());
+  }, [dispatch]);
+
   const [showPassword, setShowPassword] = useState(false);
-  const [apiError, setApiError] = useState("");
+  const apiError = useAppSelector((state) => state.user.error);
 
   const {
     register,
@@ -61,18 +66,11 @@ export default function SignupPage() {
   };
 
   const onSubmit: SubmitHandler<SignupSchemaType> = async (user) => {
-    setApiError("");
-    console.log("user", user);
-
     try {
       await dispatch(registerThunk(user)).unwrap();
       router.push("/login");
-    } catch (err: unknown) {
-      setApiError(
-        typeof err === "string"
-          ? err
-          : "Unable to create your account. Please try again.",
-      );
+    } catch (error) {
+      // error handle by redux
     }
   };
 

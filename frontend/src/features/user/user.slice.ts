@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { loginThunk, logoutThunk, getCurrentUserThunk } from "./user.action";
+import { loginThunk, logoutThunk, getCurrentUserThunk, registerThunk } from "./user.action";
 import { userState } from "./user.type";
 
 export const userSlice = createSlice({
@@ -9,9 +9,27 @@ export const userSlice = createSlice({
     loading: false,
     error: null,
   } as userState,
-  reducers: {},
+  reducers: {
+    clearError: (state) => {
+      state.error = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
+      // register
+      .addCase(registerThunk.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(registerThunk.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload;
+      })
+      .addCase(registerThunk.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+
       // login
       .addCase(loginThunk.pending, (state) => {
         state.loading = true;
@@ -24,7 +42,6 @@ export const userSlice = createSlice({
       .addCase(loginThunk.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-        console.log("loginThunk.rejected", action.payload);
       })
 
       // logout
@@ -57,4 +74,5 @@ export const userSlice = createSlice({
   },
 });
 
+export const { clearError } = userSlice.actions;
 export default userSlice.reducer;

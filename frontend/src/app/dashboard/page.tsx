@@ -14,25 +14,13 @@ import { logoutThunk } from "@/features/user/user.action";
 import { getCurrentUserThunk } from "@/features/user/user.action";
 
 export default function Dashboard() {
+  const user = useAppSelector((state) => state.user.user);
   const router = useRouter();
   const dispatch = useAppDispatch();
 
-  // useEffect(() => {
-  //   dispatch(getCurrentUserThunk());
-  // }, [dispatch]);
-
   useEffect(() => {
-    dispatch(getCurrentUserThunk())
-      .unwrap()
-      .then((user) => {
-        console.log("CURRENT USER:", user);
-      })
-      .catch((error) => {
-        console.log("CURRENT USER ERROR:", error);
-      });
+    dispatch(getCurrentUserThunk());
   }, [dispatch]);
-
-  const user = useAppSelector((state) => state.user.user);
 
   const handleLogout = async () => {
     await dispatch(logoutThunk());
@@ -50,9 +38,11 @@ export default function Dashboard() {
         </Box>
         <Box className={styles.headerActions} sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
 
+          {user && (
           <Button variant="outlined" color="error" onClick={handleLogout} size="small" sx={{ textTransform: 'none' }}>
             Logout
           </Button>
+          )}
         </Box>
       </Box>
     </Container>

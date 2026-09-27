@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
@@ -20,23 +20,33 @@ import {
 
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import Divider from '@mui/material/Divider';
+import Divider from "@mui/material/Divider";
 
 import styles from "./login.module.css";
 
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { loginThunk } from "@/features/user/user.action";
-import { loginRequest } from "@/features/user/user.type";
+import { clearError } from "@/features/user/user.slice";
 
 const loginSchema = z.object({
-  email: z.string().email("Invalid email address"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
+  email: z.string().min(1, "Email is required").email("Invalid email address"),
+
+  password: z
+    .string()
+    .min(1, "Password is required")
+    .min(6, "Password must be at least 6 characters"),
 });
+
+type LoginSchemaType = z.infer<typeof loginSchema>;
 
 export default function LoginPage() {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const apiError = useAppSelector((state) => state.user.error);
+
+  useEffect(() => {
+    dispatch(clearError());
+  }, [dispatch]);
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -44,7 +54,7 @@ export default function LoginPage() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<loginRequest>({
+  } = useForm<LoginSchemaType>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
       email: "",
@@ -56,9 +66,9 @@ export default function LoginPage() {
     setShowPassword((prev) => !prev);
   };
 
-  const onSubmit = async (data: loginRequest) => {
+  const onSubmit: SubmitHandler<LoginSchemaType> = async (user) => {
     try {
-      await dispatch(loginThunk(data)).unwrap();
+      await dispatch(loginThunk(user)).unwrap();
       router.push("/dashboard");
     } catch (error) {
       // error handle by redux
@@ -67,7 +77,6 @@ export default function LoginPage() {
 
   return (
     <Box className={styles.container}>
-
       <Box className={styles.card}>
         <Typography component="h1" className={styles.title}>
           Login
@@ -82,10 +91,7 @@ export default function LoginPage() {
 
         <Divider className={styles.divider}>or</Divider>
 
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className={styles.form}
-        >
+        <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
           <Box className={styles.formHeader}>
             <Typography component="h2" className={styles.formTitle}>
               Welcome back
@@ -97,9 +103,7 @@ export default function LoginPage() {
           </Box>
 
           {apiError && (
-            <Typography className={styles.errorMessage}>
-              {apiError}
-            </Typography>
+            <Typography className={styles.errorMessage}>{apiError}</Typography>
           )}
 
           <FormControl className={styles.inputGroup} fullWidth>
@@ -142,16 +146,10 @@ export default function LoginPage() {
                         onClick={handleTogglePassword}
                         edge="end"
                         aria-label={
-                          showPassword
-                            ? "Hide password"
-                            : "Show password"
+                          showPassword ? "Hide password" : "Show password"
                         }
                       >
-                        {showPassword ? (
-                          <VisibilityOff />
-                        ) : (
-                          <Visibility />
-                        )}
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
                       </IconButton>
                     </InputAdornment>
                   ),
