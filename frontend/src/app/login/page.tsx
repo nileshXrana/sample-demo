@@ -1,12 +1,12 @@
 "use client";
 
+import styles from "./login.module.css";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-
 import {
   Box,
   Button,
@@ -17,12 +17,9 @@ import {
   InputAdornment,
   IconButton,
 } from "@mui/material";
-
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Divider from "@mui/material/Divider";
-
-import styles from "./login.module.css";
 
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { loginThunk } from "@/features/user/user.action";
@@ -37,7 +34,7 @@ const loginSchema = z.object({
     .min(6, "Password must be at least 6 characters"),
 });
 
-type LoginSchemaType = z.infer<typeof loginSchema>;
+type loginSchemaType = z.infer<typeof loginSchema>;
 
 export default function LoginPage() {
   const router = useRouter();
@@ -54,7 +51,7 @@ export default function LoginPage() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<LoginSchemaType>({
+  } = useForm<loginSchemaType>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
       email: "",
@@ -66,7 +63,7 @@ export default function LoginPage() {
     setShowPassword((prev) => !prev);
   };
 
-  const onSubmit: SubmitHandler<LoginSchemaType> = async (user) => {
+  const onSubmit: SubmitHandler<loginSchemaType> = async (user) => {
     try {
       await dispatch(loginThunk(user)).unwrap();
       router.push("/dashboard");

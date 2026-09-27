@@ -13,6 +13,17 @@
   margin-bottom: 40px;
 }
 
+.headerContent {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.icon {
+  color: #1a73e8;
+  font-size: 32px;
+}
+
 .title {
   font-weight: 700;
   color: #202124;
@@ -25,112 +36,14 @@
   align-items: center;
 }
 
-.createButton {
-  background-color: #1a73e8 !important;
-  color: #ffffff !important;
-  font-weight: 600 !important;
-  text-transform: none !important;
-  border-radius: 20px !important;
-  padding: 8px 20px !important;
-  box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15) !important;
-  transition: all 0.2s ease-in-out !important;
-}
-
-.createButton:hover {
-  background-color: #1557b0 !important;
-  box-shadow: 0 1px 3px 0 rgba(60,64,67,0.3), 0 4px 8px 3px rgba(60,64,67,0.15) !important;
-}
-
 .logoutButton {
   background-color: #000000d7 !important;
   color: #ffffff !important;
   font-weight: 500 !important;
-  text-transform: none !important;
   border-radius: 20px !important;
   padding: 8px 16px !important;
 }
 
 .logoutButton:hover {
   background-color: rgb(0, 0, 0) !important;
-}
-
-.docGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 24px;
-}
-
-.docCard {
-  background-color: #ffffff;
-  border: 1px solid #dadce0;
-  border-radius: 12px;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  overflow: hidden;
-}
-
-.docCard:hover {
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  transform: translateY(-4px);
-}
-
-.docThumbnail {
-  height: 120px;
-  background-color: #f8f9fa;
-  border-bottom: 1px solid #e8eaed;
-  padding: 20px 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  transition: background-color 0.2s ease;
-}
-
-.docCard:hover .docThumbnail {
-  background-color: #e8f0fe;
-}
-
-.docCard:hover :global(.MuiSkeleton-root) {
-  background-color: rgba(26, 115, 232, 0.08) !important;
-}
-
-.docContent {
-  padding: 16px !important;
-}
-
-.docTitle {
-  font-weight: 600;
-  color: #202124;
-  font-size: 0.95rem;
-}
-
-.docFooter {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 8px;
-}
-
-.docDate {
-  color: #70757a;
-  font-size: 0.75rem;
-}
-
-.emptyState {
-  text-align: center;
-  padding: 100px 24px;
-  background-color: #ffffff;
-  border: 1px dashed #dadce0;
-  border-radius: 16px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.02);
-}
-
-.loadingContainer {
-  display: flex;
-  min-height: 100vh;
-  align-items: center;
-  justify-content: center;
-  background-color: #fafafa;
 }

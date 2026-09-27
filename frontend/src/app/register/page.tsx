@@ -24,7 +24,7 @@ import { registerThunk } from "@/features/user/user.action";
 import { clearError } from "@/features/user/user.slice";
 import Divider from '@mui/material/Divider';
 
-const signupSchema = z.object({
+const registerSchema = z.object({
   email: z
     .string()
     .min(1, "Email is required")
@@ -36,9 +36,9 @@ const signupSchema = z.object({
     .min(6, "Password must be at least 6 characters"),
 });
 
-type SignupSchemaType = z.infer<typeof signupSchema>;
+type registerSchemaType = z.infer<typeof registerSchema>;
 
-export default function SignupPage() {
+export default function RegisterPage() {
   const router = useRouter();
   const dispatch = useAppDispatch();
 
@@ -53,8 +53,8 @@ export default function SignupPage() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<SignupSchemaType>({
-    resolver: zodResolver(signupSchema),
+  } = useForm<registerSchemaType>({
+    resolver: zodResolver(registerSchema),
     defaultValues: {
       email: "",
       password: "",
@@ -65,7 +65,7 @@ export default function SignupPage() {
     setShowPassword((prev) => !prev);
   };
 
-  const onSubmit: SubmitHandler<SignupSchemaType> = async (user) => {
+  const onSubmit: SubmitHandler<registerSchemaType> = async (user) => {
     try {
       await dispatch(registerThunk(user)).unwrap();
       router.push("/login");

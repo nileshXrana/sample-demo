@@ -30,18 +30,23 @@ export default function Dashboard() {
   return (
     <Container className={styles.container} maxWidth="lg">
       <Box className={styles.header}>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-          <DescriptionIcon sx={{ color: '#1a73e8', fontSize: 32 }} />
+        <Box className={styles.headerContent}>
+          <DescriptionIcon className={styles.icon} />
           <Typography variant="h5" className={styles.title}>
             Projects - {user?.email}
           </Typography>
         </Box>
-        <Box className={styles.headerActions} sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-
+        <Box className={styles.headerActions}>
           {user && (
-          <Button variant="outlined" color="error" onClick={handleLogout} size="small" sx={{ textTransform: 'none' }}>
-            Logout
-          </Button>
+            <Button
+              variant="outlined"
+              color="primary"
+              onClick={handleLogout}
+              size="small"
+              className={styles.logoutButton}
+            >
+              Logout
+            </Button>
           )}
         </Box>
       </Box>

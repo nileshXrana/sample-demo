@@ -5,15 +5,15 @@ export function proxy(request: NextRequest) {
   const token = request.cookies.get("access_token")?.value;
   const { pathname } = request.nextUrl;
 
-  // if (token) {
-  //     if (pathname === '/login' || pathname === '/register' || pathname === '/') {
-  //         return NextResponse.redirect(new URL('/dashboard', request.url));
-  //     }
-  // } else {
-  //     if (pathname === '/dashboard' || pathname === '/') {
-  //         return NextResponse.redirect(new URL('/login', request.url));
-  //     }
-  // }
+  if (token) {
+      if (pathname === '/login' || pathname === '/register' || pathname === '/') {
+          return NextResponse.redirect(new URL('/dashboard', request.url));
+      }
+  } else {
+      if (pathname === '/dashboard' || pathname === '/') {
+          return NextResponse.redirect(new URL('/login', request.url));
+      }
+  }
 
   return NextResponse.next();
 }
