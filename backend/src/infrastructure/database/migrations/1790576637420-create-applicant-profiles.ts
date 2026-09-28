@@ -5,11 +5,11 @@ import {
   TableForeignKey,
 } from 'typeorm';
 
-export class CreateUsersTable1790078111008 implements MigrationInterface {
+export class CreateApplicantProfiles1790576637420 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'users',
+        name: 'applicant_profiles',
         columns: [
           {
             name: 'id',
@@ -19,23 +19,23 @@ export class CreateUsersTable1790078111008 implements MigrationInterface {
             generationStrategy: 'uuid',
           },
           {
-            name: 'name',
-            type: 'varchar',
+            name: 'applicant_id',
+            type: 'uuid',
           },
           {
-            name: 'email',
-            type: 'varchar',
-            isUnique: true,
+            name: 'years_of_experience',
+            type: 'integer',
+            isNullable: true,
           },
           {
-            name: 'password',
-            type: 'varchar',
+            name: 'about',
+            type: 'text',
+            isNullable: true,
           },
           {
-            name: 'role',
-            type: 'enum',
-            enum: ['admin', 'applicant'],
-            default: "'applicant'",
+            name: 'resume',
+            type: 'text',
+            isNullable: true,
           },
           {
             name: 'created_at',
@@ -50,9 +50,20 @@ export class CreateUsersTable1790078111008 implements MigrationInterface {
         ],
       }),
     );
+
+    await queryRunner.createForeignKey(
+      'applicant_profiles',
+      new TableForeignKey({
+        columnNames: ['applicant_id'],
+        referencedColumnNames: ['id'],
+        referencedTableName: 'users',
+        onDelete: 'CASCADE',
+      }),
+    );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('users');
+    // await queryRunner.dropTable('applicant_tags');
+    await queryRunner.dropTable('applicant_profiles');
   }
 }
