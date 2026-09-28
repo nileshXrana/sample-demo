@@ -23,8 +23,15 @@ import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { registerThunk } from "@/features/user/user.action";
 import { clearError } from "@/features/user/user.slice";
 import Divider from '@mui/material/Divider';
+import UploadButton from "@/components/UploadButton";
+import Tags from "@/components/MultiValues";
 
 const registerSchema = z.object({
+  name: z
+    .string()
+    .min(1, "Name is required")
+    .min(2, "Name must be at least 2 characters"),
+
   email: z
     .string()
     .min(1, "Email is required")
@@ -34,11 +41,28 @@ const registerSchema = z.object({
     .string()
     .min(1, "Password is required")
     .min(6, "Password must be at least 6 characters"),
+
+  years_of_experience: z
+    .string()
+    .optional(),
+
+  about: z
+    .string()
+    .optional()
+    .or(z.literal("")),
+
+  skills: z
+    .array(z.string())
+    .optional(),
 });
 
 type registerSchemaType = z.infer<typeof registerSchema>;
 
 export default function RegisterPage() {
+
+  const [resumeUrl, setResumeUrl] = useState<string | null>(null);
+  const [skills, setSkills] = useState<string[]>([]);
+
   const router = useRouter();
   const dispatch = useAppDispatch();
 
@@ -56,8 +80,12 @@ export default function RegisterPage() {
   } = useForm<registerSchemaType>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
+      name: "",
       email: "",
       password: "",
+      years_of_experience: "",
+      about: "",
+      skills: [],
     },
   });
 
@@ -67,7 +95,13 @@ export default function RegisterPage() {
 
   const onSubmit: SubmitHandler<registerSchemaType> = async (user) => {
     try {
-      await dispatch(registerThunk(user)).unwrap();
+      const userData = {
+        ...user,
+        resume: resumeUrl,
+        skills: skills,
+      };
+      console.log("userData", userData);
+      await dispatch(registerThunk(userData)).unwrap();
       router.push("/login");
     } catch (error) {
       // error handle by redux
@@ -94,6 +128,26 @@ export default function RegisterPage() {
           )}
 
           <Box>
+            <FormControl
+              className={styles.inputGroup}
+              fullWidth
+            >
+              <FormLabel htmlFor="name" className={styles.label}>
+                Name
+              </FormLabel>
+
+              <TextField
+                id="name"
+                type="text"
+                {...register("name")}
+                placeholder="Enter your name"
+                error={!!errors.name}
+                helperText={errors.name?.message}
+                fullWidth
+                variant="outlined"
+              />
+            </FormControl>
+
             <FormControl
               className={styles.inputGroup}
               fullWidth
@@ -158,6 +212,70 @@ export default function RegisterPage() {
               />
             </FormControl>
 
+            {/* profile details: */}
+            <FormControl className={styles.inputGroup} fullWidth>
+              <FormLabel htmlFor="email" className={styles.label}>
+                Years of Experience
+              </FormLabel>
+
+              <TextField
+                id="years_of_experience"
+                type="number"
+                placeholder="Enter your years of experience"
+                {...register("years_of_experience")}
+                error={!!errors.years_of_experience}
+                helperText={errors.years_of_experience?.message}
+                fullWidth
+                variant="outlined"
+              />
+            </FormControl>
+
+            <FormControl className={styles.inputGroup} fullWidth>
+              <FormLabel htmlFor="email" className={styles.label}>
+                About
+              </FormLabel>
+
+              <TextField
+                id="about"
+                type="text"
+                multiline
+                rows={4}
+                placeholder="Enter your about"
+                {...register("about")}
+                error={!!errors.about}
+                helperText={errors.about?.message}
+                fullWidth
+                variant="outlined"
+              />
+            </FormControl>
+
+            <FormControl className={styles.inputGroup} fullWidth>
+              <FormLabel htmlFor="email" className={styles.label}>
+                Upload Resume
+              </FormLabel>
+
+              <UploadButton
+                signatureEndpoint="/api/sign-cloudinary-params"
+                className="seller-input"
+                onSuccess={(result: { info: { secure_url: string } }) => {
+                  setResumeUrl(result.info.secure_url);
+                }}
+              />
+              {resumeUrl && (
+                <Typography variant="body2" color="textSecondary">
+                  Resume uploaded successfully.
+                </Typography>
+              )}
+            </FormControl>
+
+            <FormControl className={styles.inputGroup} fullWidth>
+              <FormLabel htmlFor="email" className={styles.label}>
+                Skills
+              </FormLabel>
+
+              <Tags skills={skills} setSkills={setSkills} />
+            </FormControl>
+
             <Button
               type="submit"
               variant="contained"
@@ -179,7 +297,7 @@ export default function RegisterPage() {
             </Typography>
           </Box>
         </form>
-      </Box>
-    </Box>
+      </Box >
+    </Box >
   );
 }

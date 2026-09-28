@@ -1,5 +1,4 @@
 import {
-  ArrayMinSize,
   IsArray,
   IsEmail,
   IsNotEmpty,
@@ -24,7 +23,6 @@ export class CreateUserValidator {
   // profile
   @IsOptional()
   @IsString()
-  @IsNotEmpty({ message: 'About is required' })
   about: string;
 
   @IsOptional()
@@ -36,7 +34,6 @@ export class CreateUserValidator {
   @IsArray()
   @IsString({ each: true })
   @IsNotEmpty({ each: true })
-  @ArrayMinSize(1)
   skills: string[];
 
   @IsOptional()

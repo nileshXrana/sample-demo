@@ -2,5 +2,8 @@
   "js/ts.tsdk.path": "backend/node_modules/typescript/lib",
   "editor.formatOnSave": false,
   "editor.formatOnPaste": false,
-  "editor.formatOnType": false
+  "editor.formatOnType": false,
+  "chat.tools.terminal.autoApprove": {
+    "npm run build": true
+  }
 }

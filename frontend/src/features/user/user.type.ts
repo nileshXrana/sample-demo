@@ -4,8 +4,13 @@ export interface loginRequest {
 }
 
 export interface registerRequest {
+  name: string;
   email: string;
   password: string;
+  years_of_experience?: string;
+  about?: string;
+  resume?: string | null;
+  skills: string[];
 }
 
 export interface user {

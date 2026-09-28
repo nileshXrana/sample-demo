@@ -20,7 +20,6 @@ import {
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Divider from "@mui/material/Divider";
-import GoogleIcon from '@mui/icons-material/Google';
 
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { googleLoginThunk, loginThunk } from "@/features/user/user.action";
@@ -31,7 +30,6 @@ import { auth } from "@/lib/firebase";
 
 const loginSchema = z.object({
   email: z.string().min(1, "Email is required").email("Invalid email address"),
-
   password: z
     .string()
     .min(1, "Password is required")
@@ -180,16 +178,6 @@ export default function LoginPage() {
             Login
           </Button>
         </form>
-
-        <Divider className={styles.divider}>or</Divider>
-
-        <Button
-          className={styles.googleButton}
-          variant="outlined"
-          startIcon={<GoogleIcon />}
-          onClick={handleGoogleLogin}>
-          Continue with Google
-        </Button>
 
       </Box>
     </Box>

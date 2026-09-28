@@ -19,8 +19,13 @@ export const login = async (user: loginRequest) => {
 
 export const register = async (user: registerRequest) => {
   const response = await axios.post(`${BACKEND}/auth/register`, {
+    name: user.name,
     email: user.email,
     password: user.password,
+    years_of_experience: user.years_of_experience,
+    about: user.about,
+    resume: user.resume,
+    skills: user.skills,
   });
   return response.data;
 };
