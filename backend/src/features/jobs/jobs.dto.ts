@@ -28,9 +28,9 @@ export class JobQueryDto {
   @IsOptional() @IsString() search?: string;
   @IsOptional() @IsString() department?: string;
   @IsOptional() @IsString() location?: string;
-  @IsOptional() @IsEnum(EmploymentType) employment_type?: EmploymentType;
+  @IsOptional() @Transform(({ value }) => (value === '' ? undefined : value)) @IsEnum(EmploymentType) employment_type?: EmploymentType;
   @IsOptional() @Type(() => Number) @IsInt() @Min(0) minimum_experience?: number;
-  @IsOptional() @IsEnum(JobStatus) status?: JobStatus;
+  @IsOptional() @Transform(({ value }) => (value === '' ? undefined : value)) @IsEnum(JobStatus) status?: JobStatus;
   @IsOptional() @IsString() tag?: string;
   @IsOptional() @Type(() => Number) @IsInt() @Min(1) page = 1;
   @IsOptional() @Type(() => Number) @IsInt() @Min(1) limit = 10;

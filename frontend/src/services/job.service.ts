@@ -7,9 +7,12 @@ const config = {
 };
 
 export const listJobs = async (params: Record<string, string | number>) => {
+  const filteredParams = Object.fromEntries(
+    Object.entries(params).filter(([, value]) => value !== '' && value !== undefined && value !== null),
+  );
   const response = await axios.get(`${BACKEND}/jobs`, {
     ...config,
-    params,
+    params: filteredParams,
   });
 
   return response.data;
