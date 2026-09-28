@@ -15,6 +15,7 @@ import { UsersModule } from './features/users/users.module';
 import { AuthModule } from './features/auth/auth.module';
 import { RolesGuard } from './infrastructure/guards/roles.guard';
 import { APP_GUARD } from '@nestjs/core/constants';
+import { JobsModule } from './features/jobs/jobs.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { APP_GUARD } from '@nestjs/core/constants';
     TypeOrmModule.forRoot(dataSourceOptions),
     AuthModule,
     UsersModule,
+    JobsModule,
   ],
   controllers: [AppController],
   providers: [
@@ -41,15 +43,15 @@ import { APP_GUARD } from '@nestjs/core/constants';
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(AuthMiddleware).exclude().forRoutes(
+    consumer.apply(AuthMiddleware).exclude(
       {
-        path: 'users/me',
-        method: RequestMethod.GET,
-      },
-      {
-        path: 'auth/logout',
+        path: 'auth/login',
         method: RequestMethod.POST,
       },
-    );
+      {
+        path: 'auth/register',
+        method: RequestMethod.POST,
+      },
+    ).forRoutes('*');
   }
 }

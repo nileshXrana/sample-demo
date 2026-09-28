@@ -22,7 +22,7 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Divider from "@mui/material/Divider";
 
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import { googleLoginThunk, loginThunk } from "@/features/user/user.action";
+import { loginThunk } from "@/features/user/user.action";
 import { clearError } from "@/features/user/user.slice";
 
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
@@ -71,18 +71,6 @@ export default function LoginPage() {
       router.push("/dashboard");
     } catch (error) {
       // error handle by redux
-    }
-  };
-
-  const handleGoogleLogin = async () => {
-    try {
-      const provider = new GoogleAuthProvider();
-      const result = await signInWithPopup(auth, provider);
-      const idToken = await result.user.getIdToken();
-      await dispatch(googleLoginThunk(idToken));
-      router.push("/dashboard");
-    } catch (error) {
-      console.error(error);
     }
   };
 

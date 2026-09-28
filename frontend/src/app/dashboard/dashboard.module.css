@@ -47,3 +47,9 @@
 .logoutButton:hover {
   background-color: rgb(0, 0, 0) !important;
 }
+
+.page { padding: 32px 0; }
+.toolbar { display: flex; gap: 12px; flex-wrap: wrap; margin: 20px 0; align-items: center; }
+.list { display: grid; gap: 12px; }
+.row { display: flex; justify-content: space-between; gap: 16px; align-items: center; padding: 16px; }
+@media (max-width: 600px) { .row { align-items: flex-start; flex-direction: column; } }

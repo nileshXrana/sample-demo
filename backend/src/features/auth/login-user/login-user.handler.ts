@@ -17,16 +17,12 @@ export class LoginUserHandler {
     const user = await this.findUserHandler.execute(email);
 
     if (user) {
-      if (!user.password) {
-        throw new UnauthorizedException('This account uses Google login');
-      }
-
       const isMatch = await bcrypt.compare(password, user.password);
       if (!isMatch) {
         throw new UnauthorizedException('Invalid Password');
       }
 
-      const payload = { id: user.id };
+      const payload = { id: user.id, email: user.email, role: user.role };
       const token = await this.jwtService.signAsync(payload);
       return {
         token: token,

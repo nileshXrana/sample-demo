@@ -1,12 +1,12 @@
 import {
   IsArray,
   IsEmail,
-  IsNotEmpty,
   IsNumber,
   IsOptional,
   IsString,
   MinLength,
 } from 'class-validator';
+import { Transform } from 'class-transformer';
 
 export class CreateUserValidator {
   @IsString()
@@ -23,21 +23,24 @@ export class CreateUserValidator {
   // profile
   @IsOptional()
   @IsString()
+  @Transform(({ value }) => (value === '' ? undefined : value))
   about: string;
 
   @IsOptional()
   @IsNumber()
-  @IsNotEmpty({ message: 'Experience is required' })
+  @Transform(({ value }) => (value === '' || value === null ? undefined : Number(value)))
   yearsOfExperience: number;
 
   @IsOptional()
   @IsArray()
   @IsString({ each: true })
-  @IsNotEmpty({ each: true })
+  @Transform(({ value }) =>
+    Array.isArray(value) ? value.filter((skill) => skill?.trim()) : value,
+  )
   skills: string[];
 
   @IsOptional()
   @IsString()
-  @IsNotEmpty({ message: 'Resume is required' })
+  @Transform(({ value }) => (value === '' || value === null ? undefined : value))
   resume: string;
 }

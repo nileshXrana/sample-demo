@@ -4,7 +4,6 @@ import {
   register,
   logout,
   getCurrentUser,
-  googleLogin,
 } from "@/services/user.service";
 import { loginRequest, registerRequest } from "./user.type";
 import axios from "axios";
@@ -67,23 +66,6 @@ export const getCurrentUserThunk = createAsyncThunk(
       if (axios.isAxiosError(error)) {
         return rejectWithValue(
           error.response?.data?.message ?? "Failed to get current user",
-        );
-      }
-
-      return rejectWithValue("Something went wrong");
-    }
-  },
-);
-
-export const googleLoginThunk = createAsyncThunk(
-  "auth/googleLogin",
-  async (idToken: string, { rejectWithValue }) => {
-    try {
-      return await googleLogin(idToken);
-    } catch (error: unknown) {
-      if (axios.isAxiosError(error)) {
-        return rejectWithValue(
-          error.response?.data?.message ?? "Google login failed",
         );
       }
 

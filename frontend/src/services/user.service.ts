@@ -43,14 +43,3 @@ export const getCurrentUser = async () => {
   });
   return response.data;
 };
-
-export const googleLogin = async (idToken: string) => {
-  const response = await axios.post(
-    `${BACKEND}/auth/google`,
-    { idToken },
-    {
-      withCredentials: true,
-    },
-  );
-  return response.data;
-};

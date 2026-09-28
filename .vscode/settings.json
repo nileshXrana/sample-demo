@@ -4,6 +4,7 @@
   "editor.formatOnPaste": false,
   "editor.formatOnType": false,
   "chat.tools.terminal.autoApprove": {
-    "npm run build": true
+    "npm run build": true,
+    "npx tsc": true
   }
 }

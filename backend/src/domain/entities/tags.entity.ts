@@ -6,6 +6,7 @@ import {
   ManyToMany,
 } from 'typeorm';
 import { ApplicantProfile } from './applicant-profiles.entity';
+import { Job } from './jobs.entity';
 
 @Entity('tags')
 export class Tag {
@@ -24,4 +25,7 @@ export class Tag {
     (applicantProfile) => applicantProfile.tags,
   )
   applicant_profiles: ApplicantProfile[];
+
+  @ManyToMany(() => Job, (job) => job.tags)
+  jobs: Job[];
 }

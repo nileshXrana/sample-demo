@@ -1,5 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { loginThunk, logoutThunk, getCurrentUserThunk, registerThunk } from "./user.action";
+import {
+  loginThunk,
+  logoutThunk,
+  getCurrentUserThunk,
+  registerThunk,
+} from "./user.action";
 import { userState } from "./user.type";
 
 export const userSlice = createSlice({
